@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Mobilier D&D</title>
+
+    <meta
+      name="description"
+      content="Mobilier și tapițerie la comandă în Arad. Realizăm mobilier personalizat pentru bucătărie, living, dormitor și birou."
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../favicon_io/site.webmanifest" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">D&D Mobilier</div>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav">
+        <ul class="nav-links">
+          <li><a href="../index.html">Acasă</a></li>
+          <li><a href="about.html">Despre</a></li>
+          <li><a href="products.html">Produse</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="contact-hero">
+        <div class="contact-hero-content reveal">
+          <h1>Contact</h1>
+          <p>Suntem aici pentru a discuta despre proiectul tău.</p>
+        </div>
+      </section>
+
+      <section class="contact-section">
+        <h2 class="reveal">Ia legătura cu noi</h2>
+        <div class="contact-container">
+          <div class="contact-info reveal">
+            <h3>Informații de contact</h3>
+            <p>
+              <strong>Telefon:</strong><br /><a href="tel:+40756938133"
+                >+40 756 938 133</a
+              >
+            </p>
+            <p>
+              Sună-ne sau trimite-ne un mesaj pentru a discuta despre mobilierul
+              perfect pentru casa ta.
+            </p>
+          </div>
+          <form class="contact-form reveal" id="contactForm">
+            <input type="text" id="name" placeholder="Nume" required />
+            <input type="tel" id="phone" placeholder="Telefon" />
+            <textarea
+              id="message"
+              placeholder="Mesajul tău..."
+              rows="5"
+              required
+            ></textarea>
+            <button type="submit" class="hero-btn">Trimite mesaj</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="map-section reveal">
+        <h2>Unde ne găsești</h2>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps?q=Arad,Romania&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>Mobilier D&D</h3>
+          <p>
+            Mobilă modernă realizată la comandă pentru locuințe și spații
+            comerciale.
+          </p>
+        </div>
+        <div class="footer-column">
+          <h4>Link-uri rapide</h4>
+          <ul>
+            <li><a href="../index.html">Acasă</a></li>
+            <li><a href="about.html">Despre</a></li>
+            <li><a href="products.html">Produse</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <p>Telefon: <a href="tel:+40756938133">+40 756 938 133</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/40756938133?text=Bună!%20Va%20contactez%20de%20pe%20site.%0A"
+      class="whatsapp-button show"
+      target="_blank"
+      aria-label="Chat on WhatsApp"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="../script.js"></script>
+  </body>
+</html>

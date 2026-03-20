@@ -1,0 +1,381 @@
+/* ==========================================================================
+   CATEGORY PAGE STYLES
+   ========================================================================== */
+
+:root {
+  --primary-color: #c89b6d;
+  --white: #fff;
+  --black: #111;
+}
+
+/* Category Page Wrapper */
+.category-page-wrapper {
+  position: relative;
+  background: transparent;
+  min-height: 100vh;
+  z-index: 1;
+}
+
+/* Category Hero Section with Dark Contrast Box */
+.category-hero {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+/* Base hero image style - this will be overridden by page-specific classes */
+.category-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: center/cover no-repeat;
+  animation: heroZoom 25s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+/* Bucătărie page */
+.category-hero.bucatarie-hero::after {
+  background-image: url("../images/bucatarie/ChatGPT Image Mar 17, 2026, 03_50_25 PM.jpg");
+}
+
+/* Tapițerie page */
+.category-hero.tapiterie-hero::after {
+  background-image: url("../images/tapiterie/ChatGPT Image Mar 17, 2026, 03_56_53 PM.jpg");
+}
+
+/* Living & Birou page */
+.category-hero.living-hero::after {
+  background-image: url("../images/livingbirou/ChatGPT Image Mar 17, 2026, 04_01_26 PM.jpg");
+}
+
+/* Dormitor page */
+.category-hero.dormitor-hero::after {
+  background-image: url("../images/dormitoare/ChatGPT Image Mar 18, 2026, 09_48_28 PM.jpg");
+}
+
+/* Alte articole page */
+.category-hero.altele-hero::after {
+  background-image: url("../images/altele/ChatGPT Image Mar 17, 2026, 04_07_09 PM.jpg");
+}
+
+.category-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.65)
+  );
+  z-index: -1;
+}
+
+/* Dark contrast box */
+.hero-content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 0 20px;
+}
+
+.hero-contrast-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 40px 60px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.category-hero-content {
+  position: relative;
+  z-index: 3;
+}
+
+.category-hero h1 {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+.category-hero p {
+  font-size: 20px;
+}
+
+/* Fade effect at bottom */
+.category-hero .hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, white);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Category Description */
+.category-description {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 90px 20px;
+  text-align: center;
+  background: white;
+  position: relative;
+  z-index: 2;
+}
+
+.category-description h2 {
+  margin-bottom: 30px;
+  font-size: 34px;
+}
+
+.category-description .intro-text {
+  max-width: 800px;
+  margin: 0 auto 50px;
+  font-size: 18px;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin: 60px 0;
+}
+
+.feature-item {
+  background: #f9f9f9;
+  padding: 30px 20px;
+  border-radius: 10px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.feature-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item i {
+  font-size: 40px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.feature-item h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Gallery Section */
+.category-gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 0; /* No padding above */
+  padding-bottom: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  background: white;
+  position: relative;
+  z-index: 2;
+}
+
+.category-gallery h2 {
+  margin-top: 0; /* Ensure no top margin */
+  margin-bottom: 30px;
+  font-size: 34px;
+  line-height: 1.3;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  aspect-ratio: 4/3;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-item .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 20px 15px 10px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gallery-item:hover .overlay {
+  opacity: 1;
+}
+
+.gallery-item .overlay p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Category CTA */
+.category-cta {
+  background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.category-cta h2 {
+  color: white;
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.category-cta p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Add heroZoom animation if not in main style.css */
+@keyframes heroZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+/* Staggered reveal delays */
+.reveal.feature-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.reveal.feature-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.reveal.feature-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.reveal.feature-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+.reveal.gallery-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.reveal.gallery-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.reveal.gallery-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.reveal.gallery-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.reveal.gallery-item:nth-child(5) {
+  transition-delay: 0.5s;
+}
+.reveal.gallery-item:nth-child(6) {
+  transition-delay: 0.6s;
+}
+.reveal.gallery-item:nth-child(7) {
+  transition-delay: 0.7s;
+}
+.reveal.gallery-item:nth-child(8) {
+  transition-delay: 0.8s;
+}
+.reveal.gallery-item:nth-child(9) {
+  transition-delay: 0.9s;
+}
+.reveal.gallery-item:nth-child(10) {
+  transition-delay: 1s;
+}
+.reveal.gallery-item:nth-child(11) {
+  transition-delay: 1.1s;
+}
+.reveal.gallery-item:nth-child(12) {
+  transition-delay: 1.2s;
+}
+.reveal.gallery-item:nth-child(13) {
+  transition-delay: 1.3s;
+}
+.reveal.gallery-item:nth-child(14) {
+  transition-delay: 1.4s;
+}
+.reveal.gallery-item:nth-child(15) {
+  transition-delay: 1.5s;
+}
+
+/* Footer - completely separate */
+.footer {
+  position: relative;
+  z-index: 10;
+  background: #111;
+  margin: 0;
+  width: 100%;
+}
+
+.footer,
+.footer * {
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .category-hero {
+    height: 40vh;
+  }
+
+  .category-hero h1 {
+    font-size: 40px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .category-cta h2 {
+    font-size: 32px;
+  }
+}
