@@ -174,38 +174,69 @@
 })();
 
 /* ==========================================================================
-   GALLERY LIGHTBOX
+   GALLERY LIGHTBOX - FOR ALL PAGES
    ========================================================================== */
 (function () {
-  const sliderImages = document.querySelectorAll(".slide img");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.querySelector(".lightbox-img");
-  const closeLightbox = document.querySelector(".lightbox-close");
+  // Wait for page to fully load
+  function initLightbox() {
+    // Target ALL images that should open lightbox
+    const allImages = document.querySelectorAll(
+      ".slide img, .gallery-item img, .product-item img, .product-card img",
+    );
 
-  if (sliderImages.length && lightbox && lightboxImg && closeLightbox) {
-    sliderImages.forEach((img) => {
-      img.addEventListener("click", () => {
-        lightbox.classList.add("active");
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.querySelector(".lightbox-img");
+    const closeLightbox = document.querySelector(".lightbox-close");
+
+    if (!lightbox || !lightboxImg || !closeLightbox) {
+      console.log("Lightbox elements not found");
+      return;
+    }
+
+    console.log("Found " + allImages.length + " images for lightbox");
+
+    function openLightbox(imgSrc, imgAlt) {
+      lightboxImg.src = imgSrc;
+      lightboxImg.alt = imgAlt || "";
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightboxFunction() {
+      lightbox.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    // Add click event to each image
+    allImages.forEach(function (img) {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", function (e) {
+        e.stopPropagation();
+        openLightbox(this.src, this.alt);
       });
     });
 
-    closeLightbox.addEventListener("click", () => {
-      lightbox.classList.remove("active");
-    });
-
-    lightbox.addEventListener("click", (e) => {
-      if (e.target !== lightboxImg) {
-        lightbox.classList.remove("active");
+    // Close events
+    closeLightbox.addEventListener("click", closeLightboxFunction);
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) {
+        closeLightboxFunction();
       }
     });
 
-    document.addEventListener("keydown", (e) => {
+    // Escape key
+    document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && lightbox.classList.contains("active")) {
-        lightbox.classList.remove("active");
+        closeLightboxFunction();
       }
     });
+  }
+
+  // Run when page loads
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLightbox);
+  } else {
+    initLightbox();
   }
 })();
 

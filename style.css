@@ -1082,7 +1082,6 @@ h2 {
    MOBILE GALLERY FIX - CENTERED CAROUSEL
    ========================================================================== */
 @media (max-width: 768px) {
-  /* Override gallery positioning */
   .gallery {
     width: 100%;
     left: 0;
@@ -1092,14 +1091,12 @@ h2 {
     position: relative;
   }
 
-  /* Make slider container fill width */
   .gallery-slider {
     overflow: visible !important;
     width: 100%;
     position: relative;
   }
 
-  /* Track becomes a flex container with centered items */
   .slider-track {
     display: flex !important;
     gap: 16px !important;
@@ -1108,7 +1105,6 @@ h2 {
     padding: 0 !important;
   }
 
-  /* Each slide takes 80% of screen width */
   .slide {
     flex: 0 0 80% !important;
     width: 80% !important;
@@ -1116,22 +1112,20 @@ h2 {
     margin: 0 !important;
   }
 
-  /* Images fill the slide */
   .slide img {
     width: 100% !important;
     height: 220px !important;
     object-fit: cover !important;
     border-radius: 12px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    cursor: pointer;
   }
 
-  /* Remove the fade edges */
   .gallery::before,
   .gallery::after {
     display: none !important;
   }
 
-  /* Style arrows for mobile */
   .gallery-arrow {
     opacity: 0.7 !important;
     width: 36px !important;
@@ -1148,14 +1142,8 @@ h2 {
   .gallery-arrow.right {
     right: 5px !important;
   }
-
-  /* Remove old desktop flex rules */
-  .gallery .slide {
-    flex: 0 0 80% !important;
-  }
 }
 
-/* For smaller phones */
 @media (max-width: 480px) {
   .slide {
     flex: 0 0 85% !important;
