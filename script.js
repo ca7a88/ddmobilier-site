@@ -1,26 +1,4 @@
 /* ==========================================================================
-   MOBILE MENU TOGGLE
-   ========================================================================== */
-/* (function () {
-  const toggle = document.querySelector(".menu-toggle");
-  const nav = document.querySelector(".nav");
-
-  if (toggle && nav) {
-    toggle.addEventListener("click", () => {
-      nav.classList.toggle("active");
-      toggle.classList.toggle("active");
-    });
-
-    document.querySelectorAll(".nav-links a").forEach((link) => {
-      link.addEventListener("click", () => {
-        nav.classList.remove("active");
-        toggle.classList.remove("active");
-      });
-    });
-  }
-})(); */
-
-/* ==========================================================================
    ACTIVE NAVIGATION HIGHLIGHTING
    ========================================================================== */
 (function () {
@@ -34,7 +12,6 @@
       link.classList.add("active");
     }
 
-    // Handle index page specially (since it might be just "/" or "index.html")
     if (currentPage === "index.html" && linkPage === "index.html") {
       link.classList.add("active");
     }
@@ -63,128 +40,143 @@
 })();
 
 /* ==========================================================================
-   GALLERY SLIDER (INDEX PAGE)
+   GALLERY SLIDER - WITH MOBILE AUTO-SLIDE & SWIPE
    ========================================================================== */
 (function () {
   const track = document.querySelector(".slider-track");
 
-  if (track) {
-    const slides = Array.from(document.querySelectorAll(".slide"));
-    const leftArrow = document.querySelector(".gallery-arrow.left");
-    const rightArrow = document.querySelector(".gallery-arrow.right");
+  if (!track) return;
 
-    let index = 0;
-    let galleryInterval;
-    const slideGap = 10;
+  const slides = document.querySelectorAll(".slide");
+  const leftArrow = document.querySelector(".gallery-arrow.left");
+  const rightArrow = document.querySelector(".gallery-arrow.right");
+  const gallerySlider = document.querySelector(".gallery-slider");
 
-    function updateGallery() {
-      const slideWidth = slides[0].offsetWidth + slideGap;
-      track.style.transform = `translateX(-${slideWidth * index}px)`;
-    }
+  let currentIndex = 0;
+  let autoSlideInterval;
+  let isMobile = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
 
-    function moveGallery(step = 1) {
-      index += step;
-      const halfLength = slides.length / 2;
-
-      if (index < 0) index = halfLength - 1;
-      if (index >= halfLength) index = 0;
-
-      updateGallery();
-    }
-
-    function startAutoSlide() {
-      galleryInterval = setInterval(() => moveGallery(1), 3000);
-    }
-
-    startAutoSlide();
-
-    if (leftArrow && rightArrow) {
-      leftArrow.addEventListener("click", () => moveGallery(-1));
-      rightArrow.addEventListener("click", () => moveGallery(1));
-    }
-
-    slides.forEach((slide) => {
-      slide.addEventListener("mouseenter", () =>
-        clearInterval(galleryInterval),
-      );
-      slide.addEventListener("mouseleave", () => startAutoSlide());
-    });
-
-    // Update gallery on window resize
-    window.addEventListener("resize", updateGallery);
+  function checkMobile() {
+    isMobile = window.innerWidth <= 768;
   }
-})();
 
-/* ==========================================================================
-   WHATSAPP FORM (CONTACT PAGE)
-   ========================================================================== */
-(function () {
-  const form = document.getElementById("contactForm");
+  function updateGallery() {
+    if (!slides.length) return;
 
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    const slideWidth = slides[0].offsetWidth;
+    const gap = 16; // matches CSS gap
 
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const message = document.getElementById("message").value;
-
-      const whatsappMessage = `Bună! Vă contactez de pe site.
-
-Nume: ${name}
-Telefon: ${phone}
-
-Mesaj:
-${message}`;
-
-      const url = `https://wa.me/40756938133?text=${encodeURIComponent(whatsappMessage)}`;
-
-      window.open(url, "_blank");
-      form.reset();
-    });
-  }
-})();
-
-/* ==========================================================================
-   WHATSAPP BUTTON VISIBILITY
-   ========================================================================== */
-(function () {
-  const whatsappBtn = document.querySelector(".whatsapp-button");
-
-  if (whatsappBtn) {
-    const path = window.location.pathname;
-    const filename = path.split("/").pop() || "index.html";
-
-    // Show always on contact page
-    if (filename === "contact.html") {
-      whatsappBtn.classList.add("show");
+    if (isMobile) {
+      // Mobile: calculate center position
+      const containerWidth = gallerySlider.offsetWidth;
+      const offset = (containerWidth - slideWidth) / 2;
+      const transformValue = -(slideWidth + gap) * currentIndex + offset;
+      track.style.transform = `translateX(${transformValue}px)`;
     } else {
-      // Remove any existing show class that might be forcing it visible
-      whatsappBtn.classList.remove("show");
-
-      // Check if page is already scrolled
-      if (window.scrollY > 50) {
-        whatsappBtn.classList.add("show");
-      }
-
-      // Show after scrolling
-      const onScroll = () => {
-        if (window.scrollY > 50) {
-          whatsappBtn.classList.add("show");
-          window.removeEventListener("scroll", onScroll);
-        }
-      };
-
-      window.addEventListener("scroll", onScroll);
+      // Desktop: normal slider
+      const transformValue = -(slideWidth + gap) * currentIndex;
+      track.style.transform = `translateX(${transformValue}px)`;
     }
   }
+
+  function moveSlide(direction) {
+    const maxIndex = Math.ceil(slides.length / 2) - 1;
+    currentIndex += direction;
+
+    if (currentIndex < 0) currentIndex = maxIndex;
+    if (currentIndex > maxIndex) currentIndex = 0;
+
+    updateGallery();
+  }
+
+  function startAutoSlide() {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+    // Auto-slide on BOTH desktop AND mobile
+    autoSlideInterval = setInterval(() => moveSlide(1), 3000);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+  }
+
+  // SWIPE DETECTION
+  function handleTouchStart(e) {
+    touchStartX = e.touches[0].clientX;
+    stopAutoSlide();
+  }
+
+  function handleTouchMove(e) {
+    touchEndX = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd() {
+    const swipeDistance = touchEndX - touchStartX;
+    const minSwipeDistance = 50; // minimum pixels to trigger swipe
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swipe right → previous slide
+        moveSlide(-1);
+      } else {
+        // Swipe left → next slide
+        moveSlide(1);
+      }
+    }
+
+    // Restart auto-slide after swipe
+    startAutoSlide();
+  }
+
+  // Initialize
+  checkMobile();
+  updateGallery();
+  startAutoSlide();
+
+  // Arrow click events
+  if (leftArrow) {
+    leftArrow.addEventListener("click", () => {
+      moveSlide(-1);
+      stopAutoSlide();
+      startAutoSlide();
+    });
+  }
+
+  if (rightArrow) {
+    rightArrow.addEventListener("click", () => {
+      moveSlide(1);
+      stopAutoSlide();
+      startAutoSlide();
+    });
+  }
+
+  // SWIPE EVENTS (ONLY FOR MOBILE)
+  if (gallerySlider) {
+    gallerySlider.addEventListener("touchstart", handleTouchStart);
+    gallerySlider.addEventListener("touchmove", handleTouchMove);
+    gallerySlider.addEventListener("touchend", handleTouchEnd);
+  }
+
+  // Pause on hover (desktop only)
+  if (!isMobile) {
+    track.addEventListener("mouseenter", stopAutoSlide);
+    track.addEventListener("mouseleave", startAutoSlide);
+  }
+
+  // Handle window resize
+  window.addEventListener("resize", () => {
+    checkMobile();
+    updateGallery();
+    stopAutoSlide();
+    startAutoSlide();
+  });
 })();
 
 /* ==========================================================================
-   GALLERY LIGHTBOX (FOR INDEX PAGE SLIDER)
+   GALLERY LIGHTBOX
    ========================================================================== */
 (function () {
-  // Target only slider images from index page
   const sliderImages = document.querySelectorAll(".slide img");
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.querySelector(".lightbox-img");
@@ -209,7 +201,6 @@ ${message}`;
       }
     });
 
-    // Close lightbox with Escape key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && lightbox.classList.contains("active")) {
         lightbox.classList.remove("active");
@@ -218,74 +209,84 @@ ${message}`;
   }
 })();
 
-// ==========================================================================
-// FALLBACK FOR IMAGE PATHS (runs only if images are broken)
-// ==========================================================================
+/* ==========================================================================
+   WHATSAPP FORM
+   ========================================================================== */
 (function () {
-  // Check if we're in a subfolder and images are failing
+  const form = document.getElementById("contactForm");
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const message = document.getElementById("message").value;
+
+      const whatsappMessage = `Bună! Vă contactez de pe site.\n\nNume: ${name}\nTelefon: ${phone}\n\nMesaj:\n${message}`;
+      const url = `https://wa.me/40756938133?text=${encodeURIComponent(whatsappMessage)}`;
+
+      window.open(url, "_blank");
+      form.reset();
+    });
+  }
+})();
+
+/* ==========================================================================
+   WHATSAPP BUTTON
+   ========================================================================== */
+(function () {
+  const whatsappBtn = document.querySelector(".whatsapp-button");
+
+  if (whatsappBtn) {
+    const filename = window.location.pathname.split("/").pop() || "index.html";
+
+    if (filename === "contact.html") {
+      whatsappBtn.classList.add("show");
+    } else {
+      whatsappBtn.classList.remove("show");
+
+      if (window.scrollY > 50) {
+        whatsappBtn.classList.add("show");
+      }
+
+      const onScroll = () => {
+        if (window.scrollY > 50) {
+          whatsappBtn.classList.add("show");
+          window.removeEventListener("scroll", onScroll);
+        }
+      };
+
+      window.addEventListener("scroll", onScroll);
+    }
+  }
+})();
+
+/* ==========================================================================
+   IMAGE PATH FALLBACK
+   ========================================================================== */
+(function () {
   function checkAndFixImages() {
-    // Create a test image to see if the path works
     const testImg = new Image();
     testImg.onerror = function () {
-      // Image failed to load - we need to fix paths
-      console.log("🔧 Fixing image paths for subfolder...");
-
-      // Determine correct path prefix
       const isInSubfolder = window.location.pathname.includes("/pages/");
       const prefix = isInSubfolder ? ".." : ".";
 
-      // Create style override with ALL hero images
       const style = document.createElement("style");
       style.textContent = `
-        /* Main hero sections */
-        .hero::after,
-        .about-hero::after,
-        .products-hero::after,
-        .contact-hero::after {
+        .hero::after, .about-hero::after, .products-hero::after, .contact-hero::after {
           background-image: url("${prefix}/images/hero/603799320_4622795021280975_3147762570423294780_n.jpg") !important;
         }
-        
-        /* Category hero sections */
-        .category-hero.bucatarie-hero::after {
-          background-image: url("${prefix}/images/bucatarie/ChatGPT Image Mar 17, 2026, 03_50_25 PM.jpg") !important;
-        }
-        
-        .category-hero.tapiterie-hero::after {
-          background-image: url("${prefix}/images/tapiterie/ChatGPT Image Mar 17, 2026, 03_56_53 PM.jpg") !important;
-        }
-        
-        .category-hero.living-hero::after {
-          background-image: url("${prefix}/images/livingbirou/ChatGPT Image Mar 17, 2026, 04_01_26 PM.jpg") !important;
-        }
-        
-        .category-hero.dormitor-hero::after {
-          background-image: url("${prefix}/images/dormitoare/ChatGPT Image Mar 18, 2026, 09_48_28 PM.jpg") !important;
-        }
-        
-        .category-hero.altele-hero::after {
-          background-image: url("${prefix}/images/altele/ChatGPT Image Mar 17, 2026, 04_07_09 PM.jpg") !important;
-        }
       `;
-
       document.head.appendChild(style);
-      console.log("✅ Image paths fixed successfully!");
     };
-
-    testImg.onload = function () {
-      console.log("✅ Images are loading correctly - no fix needed");
-    };
-
-    // Test with a relative path that might fail
-    // Using a path that's likely to fail when in subfolder
     testImg.src =
       "images/hero/603799320_4622795021280975_3147762570423294780_n.jpg";
   }
 
-  // Run after page loads
   if (document.readyState === "loading") {
     window.addEventListener("load", checkAndFixImages);
   } else {
-    // DOM already loaded
     checkAndFixImages();
   }
 })();
